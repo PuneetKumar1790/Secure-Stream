@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-const UserSchema=new Schema({
+
+const UserSchema=new mongoose.Schema({
     username:{
         type:String,
         required:true,
@@ -15,7 +16,7 @@ const UserSchema=new Schema({
         lowercase:true,
         trim:true
     },
-    pasword:{
+    password:{
         type:String,
         required:[true,"Password is required "],
         

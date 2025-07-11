@@ -48,14 +48,20 @@ router.post("/login",async(req,res)=>{
         }
 
         //find user
-        const user=User.findOne({email});
-        if(!user)
+        const user=await User.findOne({email});
+        if(!user){
+            return res.status(400).json({msg:"Invalid credentials"})
+        }
+        //Check pswrd
+        const ismatch= await bcrypt.compare(password,user.password);
+        if(!ismatch) return res.status(400).json({msg:"Invalid credentials"})
 
-
-
+        //Genertae JWT
+        const token=jwt.sign({id: user._id},process.env.JWT_SECRET,{expiresIn:"1h"});
 
 
     } catch (error) {
-        
+        console.error("Login error :",error);
+        res.status(500).json({msg:"Login failed",error:error.message})
     }
 })
