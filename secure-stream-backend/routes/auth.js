@@ -56,9 +56,23 @@ router.post("/login",async(req,res)=>{
         const ismatch= await bcrypt.compare(password,user.password);
         if(!ismatch) return res.status(400).json({msg:"Invalid credentials"})
 
-        //Genertae JWT
-        const token=jwt.sign({id: user._id},process.env.JWT_SECRET,{expiresIn:"1h"});
+        //Genertae tokens
+        const accessToken=jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:process.env.ACCESS_EXPIRES_IN});
+        const refreshToken=jwt.sign({id:user._id},process.env.JWT_REFRESH_SECRET,{expiresIn:process.env.REFRESH_EXPIRES_IN});
 
+        //Save new refresh token in DB
+        user.refreshToken=refreshToken;
+        await user.save();
+
+        //Send refresh token in cookies 
+        res.cookie("refreshToken",refreshToken,{
+            httpOnly:true,
+            secure:true,
+            sameSite:"Strict",
+            maxAge:7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        res.json({accessToken});
 
     } catch (error) {
         console.error("Login error :",error);

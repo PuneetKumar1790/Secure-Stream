@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 
 import authRoutes from "./routes/auth.js";
 import streamRoutes from "./routes/stream.js";
+import refreshRoutes from "./routes/refresh.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -12,6 +14,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use("/videos", express.static("public")); // Serve HLS from public (for testing)
 
 app.get("/", (req, res) => {
@@ -22,6 +25,7 @@ app.get("/", (req, res) => {
 //Mounting route handlers
 app.use("/api/auth",authRoutes);  //Signup,login,Me
 app.use("/api/stream",streamRoutes);  //Signed video Urls
+app.use("/api/refresh",refreshRoutes);
 
 // MongoDB connection
 const connectDB = async () => {
