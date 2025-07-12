@@ -1,8 +1,9 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import {User} from "../models/User.js";
 const router=Router();
+import verifyToken from "../middlewares/auth.js";
 
 // Sign UP route
 router.post("/signup",async(req,res)=>{
@@ -34,7 +35,7 @@ router.post("/signup",async(req,res)=>{
 
 
     } catch (error) {
-        res.sendStatus(500).json({msg:"Signup error",error:err.message});
+        res.status(500).json({msg:"Signup error",error:error.message});
     }
 });
 
@@ -68,7 +69,7 @@ router.post("/login",async(req,res)=>{
         res.cookie("refreshToken",refreshToken,{
             httpOnly:true,
             secure:true,
-            sameSite:"Strict",
+            sameSite:"strict",
             maxAge:7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
@@ -79,3 +80,48 @@ router.post("/login",async(req,res)=>{
         res.status(500).json({msg:"Login failed",error:error.message})
     }
 })
+
+
+
+//Log out route
+router.post("/logout",async(req,res)=>{
+    try {
+        const token=req.cookies.refreshToken;
+        if(!token) return res.status(204).json({msg:"No refresh token in browser"});
+
+        const decoded=jwt.verify(token,process.env.JWT_REFRESH_SECRET);
+        const user=await User.findById(decoded.id);
+        if (!user) return res.status(204).json({msg:"User not present"});
+        user.refreshToken=null;  //token changed to null in db
+        await user.save();
+
+        res.clearCookie("refreshToken",{
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict"
+        })
+
+        res.json({msg:"Logged out"});
+
+    } catch (error) {
+        console.error("Logout error",error.message);
+        res.status(500).json({msg:"Log out failed",error:error.message});
+    }
+})
+
+//get current user info
+router.get("/me",verifyToken,async(req,res)=>{
+    try {
+        const user=await User.findById(req.user.id).select("-password -refreshtoken");
+
+        if(!user) return res.status(404).json({msg:"User not found"});
+
+        res.json({msg:"You are verified",user});
+    } catch (error) {
+        res.status(500).json({msg:"Server error",error:error.message});
+    }
+})
+
+
+
+export default router;

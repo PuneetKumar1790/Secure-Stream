@@ -20,24 +20,24 @@ router.post("/",async (req,res)=>{
         const newRefreshToken=jwt.sign({id:user._id},process.env.JWT_REFRESH_SECRET,{expiresIn:process.env.REFRESH_EXPIRES_IN});
 
         //Generate new acces token
-        const newaccessToken=jwt.sign({id:user_id,},process.env.JWT_SECRET,{expiresIn:process.env.ACCESS_EXPIRES_IN});
+        const accessToken=jwt.sign({id:user._id,},process.env.JWT_SECRET,{expiresIn:process.env.ACCESS_EXPIRES_IN});
 
         //Save new refresh token in db 
         user.refreshToken=newRefreshToken;
         await user.save();
 
         //Send refresh token cookie
-        res.cookie("refreshtoken",newRefreshToken,{
+        res.cookie("refreshToken",newRefreshToken,{
             httpOnly:true,
             secure:true,
-            sameSite:"Strict",
+            sameSite:"strict",
             maxAge:7 * 24 * 60 * 60 * 1000,
         });
 
-        res.json({newaccessToken})
+        res.json({accessToken})
 
     } catch (error) {
-        console.error("Refresh error:",err);
+        console.error("Refresh error:",error);
         res.status(403).json({msg:"Token invalid or expired"});
     }
 

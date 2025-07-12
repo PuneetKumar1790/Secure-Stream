@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import streamRoutes from "./routes/stream.js";
 import refreshRoutes from "./routes/refresh.js";
 import cookieParser from "cookie-parser";
+import verifyToken from "./middlewares/auth.js";
 
 dotenv.config();
 
