@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureStream - Your Private Cinema</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            red: {
+              600: '#dc2626',
+              700: '#b91c1c',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-black/90 backdrop-blur-sm fixed w-full top-0 z-50 px-4 py-3 border-b border-gray-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="assets/logo.png" alt="Secure Stream" class="h-12 w-12" />
+        <span class="text-xl font-bold text-white">SecureStream</span>
+      </a>
+      <div class="flex items-center space-x-4" id="nav-buttons">
+        <a href="login.html" class="text-white hover:text-red-500 transition-colors px-4 py-2">Login</a>
+        <a href="signup.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded transition-colors">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="relative h-screen flex items-center justify-center">
+    <div class="absolute inset-0">
+      <img src="assets/banner.webp" alt="Hero Background" class="w-full h-full object-cover opacity-40" />
+    </div>
+    <div class="relative z-10 text-center px-4">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">Your private cinema.</h1>
+      <p class="text-xl md:text-2xl mb-8 text-gray-300">Secure. Fast. Unleakable.</p>
+      <a href="watch.html" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-block">
+        Start Watching
+      </a>
+    </div>
+  </div>
+
+  <!-- Movie Carousels -->
+  <div class="py-12 space-y-20">
+
+    <!-- Trending Now -->
+    <div class="movie-carousel relative">
+      <h2 class="text-2xl font-bold mb-4 px-4">Trending Now</h2>
+      <button class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('trending-carousel', -1)">&#8592;</button>
+      <button class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('trending-carousel', 1)">&#8594;</button>
+      <div id="trending-carousel" class="flex overflow-x-auto gap-4 px-4 pb-4 scroll-smooth hide-scrollbar">
+        <!-- Movies populated via JS -->
+      </div>
+    </div>
+
+    <!-- Watch Again -->
+    <div class="movie-carousel relative">
+      <h2 class="text-2xl font-bold mb-4 px-4">Watch Again</h2>
+      <button class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('watch-again-carousel', -1)">&#8592;</button>
+      <button class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('watch-again-carousel', 1)">&#8594;</button>
+      <div id="watch-again-carousel" class="flex overflow-x-auto gap-4 px-4 pb-4 scroll-smooth hide-scrollbar">
+        <!-- Movies populated via JS -->
+      </div>
+    </div>
+
+    <!-- Popular Movies -->
+    <div class="movie-carousel relative">
+      <h2 class="text-2xl font-bold mb-4 px-4">Popular Movies</h2>
+      <button class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('popular-carousel', -1)">&#8592;</button>
+      <button class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full" onclick="scrollCarousel('popular-carousel', 1)">&#8594;</button>
+      <div id="popular-carousel" class="flex overflow-x-auto gap-4 px-4 pb-4 scroll-smooth hide-scrollbar">
+        <!-- Movies populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Secure Stream -->
+  <div class="py-16 px-4 bg-gray-900">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-12">Why Secure Stream?</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 flex flex-col items-center">
+          <div class="w-12 h-12 text-red-500 mb-4">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-center">AES-128 HLS encryption</h3>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 flex flex-col items-center">
+          <div class="w-12 h-12 text-red-500 mb-4">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-center">10-minute signed video access</h3>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 flex flex-col items-center">
+          <div class="w-12 h-12 text-red-500 mb-4">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-center">Zero piracy, zero leaks</h3>
+        </div>
+        <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 flex flex-col items-center">
+          <div class="w-12 h-12 text-red-500 mb-4">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-center">Student-friendly pricing (Free)</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-800 py-8 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+      <p class="text-gray-400">© <span id="current-year"></span> SecureStream. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll arrow handler
+    function scrollCarousel(id, direction) {
+      const carousel = document.getElementById(id);
+      const scrollAmount = 300;
+      carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+
+    // Year in footer
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>

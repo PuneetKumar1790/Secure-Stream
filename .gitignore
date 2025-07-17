@@ -1,25 +1,41 @@
-# Node modules
+#  Node dependencies
 node_modules/
 
-# Environment variables
+#  Environment variables and secrets
 .env
+encryption.key
+key_info.txt
 
-# Logs
-logs
+# 📼 Media folders and generated content
+assets/
+compressed/
+output/
+*.mp4
+*.ts
+*.m3u8
+*.key
+
+#  FFmpeg tools (if downloaded locally)
+ffmpeg/
+*.7z
+*.sha256
+*.ver
+*.exe
+
+#  Build outputs (if using bundlers later)
+dist/
+build/
+
+#  Logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# OS stuff
+#  OS and IDE/editor configs
 .DS_Store
 Thumbs.db
-
-# IDEs
 .vscode/
 .idea/
 *.swp
-
-# Output folders (optional)
-/dist
-/build

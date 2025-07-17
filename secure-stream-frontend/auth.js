@@ -19,16 +19,17 @@ async function handleLogin(e) {
   submitButton.disabled = true;
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    const res = await fetch("http://127.0.0.1:5000/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", 
+      credentials: "include",//Importsnt
       body: JSON.stringify({ email, password }),
     });
-
     const data = await res.json();
+    console.log("Response status:", res.status);
+    console.log("Response body:", data);
 
     if (!res.ok) {
       showError(data.msg || "Login failed");
@@ -45,7 +46,6 @@ async function handleLogin(e) {
     submitButton.disabled = false;
   }
 }
-
 
 //  SIGNUP FUNCTION
 async function handleSignup(e) {
@@ -66,7 +66,7 @@ async function handleSignup(e) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", 
+      credentials: "include",
       body: JSON.stringify({ username, email, password }),
     });
 
@@ -81,7 +81,6 @@ async function handleSignup(e) {
 
     alert("Signup successful! Please log in.");
     window.location.href = "login.html";
-
   } catch (err) {
     showError("Server error. Try again later.");
     console.error(err);
@@ -89,7 +88,6 @@ async function handleSignup(e) {
     submitButton.disabled = false;
   }
 }
-
 
 //  SHOW ERROR
 function showError(message) {
