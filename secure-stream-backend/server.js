@@ -7,16 +7,20 @@ import authRoutes from "./routes/auth.js";
 import streamRoutes from "./routes/stream.js";
 import refreshRoutes from "./routes/refresh.js";
 import cookieParser from "cookie-parser";
-import verifyToken from "./middlewares/auth.js";
+import movieRoutes from "./routes/movies.js"
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5500", 
+    credentials: true              
+  })
+);    
 app.use(express.json());
 app.use(cookieParser());
-app.use("/videos", express.static("public")); // Serve HLS from public (for testing)
 
 app.get("/", (req, res) => {
   res.send("Secure Stream Backend Running");
@@ -25,8 +29,10 @@ app.get("/", (req, res) => {
 
 //Mounting route handlers
 app.use("/api/auth",authRoutes);  //Signup,login,Me
-app.use("/api/stream",streamRoutes);  //Signed video Urls
 app.use("/api/refresh",refreshRoutes);
+app.use("/api/stream", streamRoutes);
+app.use("/api/movies", movieRoutes);
+
 
 // MongoDB connection
 const connectDB = async () => {

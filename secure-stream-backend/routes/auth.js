@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: process.env.REFRESH_EXPIRES_IN }
     );
-    console.log(refreshToken);
+    
     //Save new refresh token in DB
     user.refreshToken = refreshToken;
     await user.save();
@@ -74,15 +74,15 @@ router.post("/login", async (req, res) => {
     //Send refresh token in cookies
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false,
+       sameSite: "Lax",      //  Lax,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false,
+       sameSite: "Lax",      //  Lax,
       maxAge: 15 * 60 * 1000, // 15 minutes
     });
     
@@ -109,8 +109,8 @@ router.post("/logout", async (req, res) => {
 
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false,
+       sameSite: "Lax",      //  Lax,
     });
 
     res.json({ msg: "Logged out" });
@@ -123,9 +123,7 @@ router.post("/logout", async (req, res) => {
 //get current user info
 router.get("/me", verifyToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select(
-      "-password -refreshtoken"
-    );
+    const user = await User.findById(req.user.id).select("username email");
 
     if (!user) return res.status(404).json({ msg: "User not found" });
 
@@ -134,5 +132,6 @@ router.get("/me", verifyToken, async (req, res) => {
     res.status(500).json({ msg: "Server error", error: error.message });
   }
 });
+
 
 export default router;

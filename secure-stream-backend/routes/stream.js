@@ -7,6 +7,7 @@ import {
 } from "@azure/storage-blob";
 import { Router } from "express";
 import dotenv from "dotenv";
+import verifyToken from "../middlewares/auth.js";
 dotenv.config();
 const router = Router();
 
@@ -34,7 +35,7 @@ const generateSASurl = (blobName) => {
     return `https://${accountName}.blob.core.windows.net/${containerName}/${blobName}?${sasToken}`;
 };
 
-router.get("/:id", async (req, res) => {
+router.get("/:id",verifyToken, async (req, res) => {
     try {
         const { id } = req.params;
         if (id != "social") {
